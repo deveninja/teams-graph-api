@@ -287,7 +287,7 @@ export const getGroups = async (token) => {
 }
 
 
-export const createChannel = async (userConsentedToken, teamId) => {
+export const createChannel = async (userConsentedToken, userId, teamId) => {
    // ${url}/teams/{team-id}/channels
    try {
          
@@ -299,7 +299,7 @@ export const createChannel = async (userConsentedToken, teamId) => {
          members:[
          {
             '@odata.type':'#microsoft.graph.aadUserConversationMember',
-            'user@odata.bind':`${url}/users('6835baea-f4cf-4387-b774-26ccbeaecde0')`,
+            'user@odata.bind':`${url}/users('${userId}')`,
             roles: ['owner']
          }
          ]
@@ -350,18 +350,13 @@ export const getMyTeamsId = async (userConsentToken, teamName) => {
 }
 
 
-export const sendPrivateMessage = async (userToken) => {
+export const sendPrivateMessage = async (userToken, channelId, teamId) => {
    // https://graph.microsoft.com/beta/users/{user-id}/chats/{chat-id}/messages
    // ${url}/teams/{team-id}/channels/{channel-id}/messages
    
    
    
-   const creds = {
-      channelId: '19:8640d8d29fcd4396aaf671b1e2d17808@thread.tacv2',
-      teamId: '9d75d2a0-9050-4987-9fde-f5aef1b7ee17'
-   }
-   
-   const url = `${url}/teams/${creds.teamId}/channels/${creds.channelId}/messages`
+   const url = `${url}/teams/${teamId}/channels/${channelId}/messages`
    try {
          
       return await axios.post(
